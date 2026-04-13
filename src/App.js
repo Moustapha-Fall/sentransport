@@ -5,8 +5,8 @@ import Header from './Header';
     <div className = "App">
     < Header/>
       <main className = "contenu">
-        <p> Bienvenue ! Cette application vous aide a trouver
-        votre ligne de bus à Dakar.
+        <p> Bienvenue ! Cette application vous aide à trouver
+            votre ligne de bus à Dakar.
         </p>
       </main >
     </div >
