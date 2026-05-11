@@ -8,10 +8,9 @@ import Footer from './Footer';
 
 function App() {
   const [recherche, setRecherche] = useState("");
-  const [ligneSelectionnee, setLigneSelectionnee]
-    = useState(null);
+  const [ligneSelectionnee, setLigneSelectionnee] = useState(null);
+  const [nbRecherches, setNbRecherches] = useState(0);
 
-  
   const lignes = [
       { id: 1, numero: "1",  depart: "Parcelles Assainies", arrivee: "Plateau", arrets: 14,
         listeArrets: ["Parcelles U14", "Parcelles U10",
@@ -56,8 +55,10 @@ function App() {
     <div className="App">
       <Header />
       <main className="contenu">
+        <p>Vous avez effectué {nbRecherches} recherche(s)</p>
         <Recherche valeur={recherche}
-                   onChange={setRecherche} />
+                   onChange={setRecherche}
+                   onEffacer={() => { setNbRecherches(n => n + 1); setRecherche(""); }} />
         <p className="resultat-recherche">
           {lignesFiltrees.length} ligne
           {lignesFiltrees.length > 1 ? 's' : ''} trouvee
@@ -75,6 +76,9 @@ function App() {
             onClick={() => handleClickLigne(ligne)}
           />
         ))}
+        {lignesFiltrees.length === 0 && (
+          <p>Aucune ligne trouvée</p>
+        )}
         {ligneSelectionnee
           && <DetailLigne ligne={ligneSelectionnee} />}
       </main>
