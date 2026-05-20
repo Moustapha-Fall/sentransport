@@ -5,6 +5,7 @@ import Recherche from './Recherche';
 import LigneBus from './LigneBus';
 import DetailLigne from './DetailLigne';
 import Footer from './Footer';
+import Recharger from './Recharger';
 
 function App() {
   // 1. Trois etats
@@ -17,12 +18,14 @@ function App() {
 
 
   // 2. Charger les donnees au demarrage
-  useEffect(() => {
+  // Extraire le fetch dans une fonction separee
+  function chargerLignes() {
+    setChargement(true);
+    setErreur(null);
     fetch("http://localhost:5000/lignes")
       .then(response => {
         if (!response.ok) {
-          throw new Error(
-            "Erreur serveur : " + response.status);
+          throw new Error("Erreur serveur : " + response.status);
         }
         return response.json();
       })
@@ -34,6 +37,10 @@ function App() {
         setErreur(error.message);
         setChargement(false);
       });
+  }
+  
+  useEffect(() => {
+    chargerLignes();
   }, []);
 
   // 3. Le reste ne change pas (filtre, clic, etc.)
@@ -47,13 +54,19 @@ function App() {
   );
 
   function handleClickLigne(ligne) {
-    if (ligneSelectionnee
-        && ligneSelectionnee.id === ligne.id) {
-      setLigneSelectionnee(null);
-    } else {
-      setLigneSelectionnee(ligne);
-    }
+  if (ligneSelectionnee && ligneSelectionnee.id === ligne.id) {
+    setLigneSelectionnee(null);
+  } else {
+    fetch(`http://localhost:5000/lignes/${ligne.id}`)
+      .then(response => response.json())
+      .then(data => {
+        setLigneSelectionnee(data);
+      })
+      .catch(error => {
+        setErreur(error.message);
+      });
   }
+}
 
   // Ecran de chargement
   if (chargement) {
@@ -78,18 +91,18 @@ function App() {
           <div className="message-erreur">
             <p>Impossible de charger les lignes.</p>
             <p className="erreur-detail">{erreur}</p>
-            <p>Verifiez que le serveur Flask est lance
-              (python api/app.py).</p>
+            <p>Verifiez que le serveur Flask est lance.</p>
+            <Recharger onRecharger={chargerLignes} />
           </div>
         </main>
       </div>
     );
   }
-
   return (
     <div className="App">
       <Header />
       <main className="contenu">
+        <Recharger onRecharger={chargerLignes} />
         <p>Vous avez effectué {nbRecherches} recherche(s)</p>
         <Recherche valeur={recherche}
                    onChange={setRecherche}

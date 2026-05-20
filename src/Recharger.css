@@ -1,0 +1,15 @@
+.btn-recharger {
+  padding: 10px 20px;
+  background-color: #0a6e31;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 16px;
+  transition: background-color 0.2s;
+}
+
+.btn-recharger:hover {
+  background-color: #085a27;
+}

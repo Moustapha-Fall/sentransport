@@ -44,5 +44,18 @@
     "arrets": 11,
     "listeArrets": ["Yoff Village", "Aeroport LSS",
       "Parcelles U17", "Grand Yoff", "HLM", "Sandaga"]
+  },
+  {
+    "id": 7, "numero": "5",
+    "depart": "Thiaroye", "arrivee": "Plateau",
+    "arrets": 13,
+    "listeArrets": ["Thiaroye Gare", "Pikine", "Keur Massar",
+      "Grand Yoff", "Parcelles", "Liberte 6", "Place Obe", "Plateau"]
+  },
+  {
+    "id": 8, "numero": "3",
+    "depart": "Hann", "arrivee": "Medina",
+    "arrets": 9,
+    "listeArrets": ["Hann", "Colobane", "Fass", "Medina"]
   }
 ]
