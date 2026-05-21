@@ -2,6 +2,7 @@ import json
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 
+# Initialiser l'application Flask
 app = Flask(__name__)
 CORS(app)
 
@@ -9,6 +10,15 @@ CORS(app)
 with open("lignes_ddd.json", "r") as f:
     lignes = json.load(f)
 
+with open ("arrets.json", "r") as f :
+    arrets = json.load(f)
+
+# Endpoint pour obtenir la liste de tous les arrets
+@app.route("/arrets")
+def get_arrets():
+    return jsonify (arrets)
+
+# Endpoint pour obtenir les details d'un arret par son ID
 @app.route("/")
 def accueil():
     return jsonify({
@@ -16,10 +26,12 @@ def accueil():
         "endpoints": ["/lignes", "/lignes/<id>", "/arrets"]
     })
 
+# Endpoint pour obtenir la liste de toutes les lignes
 @app.route("/lignes")
 def get_lignes():
     return jsonify(lignes)
 
+# Endpoint pour obtenir les details d'une ligne par son ID
 @app.route("/lignes/<int:ligne_id>")
 def get_ligne(ligne_id):
     ligne = next(
@@ -30,14 +42,7 @@ def get_ligne(ligne_id):
         return jsonify({"erreur": "Ligne non trouvee"}), 404
     return jsonify(ligne)
 
-@app.route("/arrets")
-def get_arrets():
-    tous_arrets = set()
-    for ligne in lignes:
-        for arret in ligne["listeArrets"]:
-            tous_arrets.add(arret)
-    return jsonify(list(tous_arrets))
-
+# Endpoint pour les statistiques
 @app.route("/stats")
 def get_stats():
     total_lignes = len(lignes)
@@ -49,7 +54,7 @@ def get_stats():
         "ligne_plus_arrets": ligne_max["numero"]
     })
 
-
+# Endpoint pour la recherche de lignes par nom de depart ou d'arrivee
 @app.route("/lignes/recherche")
 def recherche_lignes():
     q = request.args.get("q", "")
@@ -59,7 +64,6 @@ def recherche_lignes():
         or q.lower() in l["arrivee"].lower()
     ]
     return jsonify(resultats)
-
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)

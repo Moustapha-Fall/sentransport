@@ -6,6 +6,7 @@ import LigneBus from './LigneBus';
 import DetailLigne from './DetailLigne';
 import Footer from './Footer';
 import Recharger from './Recharger';
+import Carte from './Carte';
 
 function App() {
   // 1. Trois etats
@@ -129,6 +130,7 @@ function App() {
         )}
         {ligneSelectionnee
           && <DetailLigne ligne={ligneSelectionnee} />}
+        <Carte />
       </main>
       <Footer />
     </div>
